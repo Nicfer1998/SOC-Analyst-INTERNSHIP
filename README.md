@@ -156,7 +156,7 @@ Aquí documento mi metodología para resolver incidentes reales:
     * 👉 [Ver reporte](./Incident-Reports/35-First-Credential-Added-Application-Sophos-VPN-SSO.md)
 
 * **[INC-20260609-036] - Anonymous IP Address — Actividad de Usuario Confirmada como Normal**
-    * *Resumen:* Dos alertas por acceso desde IP clasificada como hosting/anónima (176.126.83.26 — Oneprovider, Arezzo, Italia). Solo el usuario afectado accede desde esa IP — descarta proxy corporativo. Resultados de autenticación predominantemente exitosos (0 — Success). Caso derivado al cliente para confirmación: usuario verificó que la actividad es normal y la IP corresponde a su conectividad habitual en la zona de Cosenza, Italia.
+    * *Resumen:* Dos alertas por acceso desde IP clasificada como hosting/anónima (xxx.xxx.xx.xx — Oneprovider, [Ubicación habitual]). Solo el usuario afectado accede desde esa IP — descarta proxy corporativo. Resultados de autenticación predominantemente exitosos (0 — Success). Caso derivado al cliente para confirmación: usuario verificó que la actividad es normal y la IP corresponde a su conectividad habitual.
     * 👉 [Ver reporte](./Incident-Reports/36-Anonymous-IP-Address-Actividad-Confirmada-Normal.md)
 
 ---

@@ -159,6 +159,74 @@ Aquí documento mi metodología para resolver incidentes reales:
     * *Resumen:* Dos alertas por acceso desde IP clasificada como hosting/anónima (xxx.xxx.xx.xx — Oneprovider, [Ubicación habitual]). Solo el usuario afectado accede desde esa IP — descarta proxy corporativo. Resultados de autenticación predominantemente exitosos (0 — Success). Caso derivado al cliente para confirmación: usuario verificó que la actividad es normal y la IP corresponde a su conectividad habitual.
     * 👉 [Ver reporte](./Incident-Reports/36-Anonymous-IP-Address-Actividad-Confirmada-Normal.md)
 
+* **[INC-20261101-037] - Detección de curl.exe — Descarga Legítima (Falso Positivo)**
+    * *Resumen:* Regla custom detecta uso de curl.exe (táctica Command and Control). El análisis de la línea de comando (vía DeviceProcessEvents) confirmó la descarga del instalador legítimo de una app desde el dominio oficial del fabricante. Falso positivo con nota de Shadow IT.
+    * 👉 [Ver reporte](./Incident-Reports/37-Deteccion-curl-exe-Descarga-Legitima.md)
+
+* **[INC-20261101-038] - Cuenta Bloqueada por Smart Lockout (50053) — Ataque Contenido**
+    * *Resumen:* Cuenta bloqueada (50053) por fallos desde varios países. Solo los accesos exitosos provienen del país de la organización; todo lo foráneo falla. Cuenta atacada, NO comprometida. Recomendación: Acceso Condicional geográfico + MFA.
+    * 👉 [Ver reporte](./Incident-Reports/38-Cuenta-Bloqueada-Smart-Lockout-50053.md)
+
+* **[INC-20261101-039] - Exploit ROP Prevenido en Reproductor Multimedia (Falso Positivo)**
+    * *Resumen:* Sophos Intercept X bloqueó un intento de explotación ROP sobre un reproductor legítimo. Detección de comportamiento en memoria disparada por el funcionamiento normal del reproductor. Prevenido, sin ejecución.
+    * 👉 [Ver reporte](./Incident-Reports/39-Exploit-ROP-Reproductor-Multimedia.md)
+
+* **[INC-20261101-040] - PUA: Herramientas de Administración de Red de Doble Uso**
+    * *Resumen:* Varias herramientas de administración/enumeración de red (escáner de puertos, enumerador, gestor de procesos remotos) marcadas como PUA en la carpeta de IT. Confirmado kit legítimo del equipo técnico. Recomendación: exclusión + endurecer accesos a la carpeta.
+    * 👉 [Ver reporte](./Incident-Reports/40-PUA-Herramientas-Administracion-Red-Doble-Uso.md)
+
+* **[INC-20261101-041] - Inicios de Sesión desde IP Anónima — El Contexto Decide**
+    * *Resumen:* Alerta "Anonymous IP address" resuelta con veredictos distintos según el contexto (benigno con MFA / ataque contenido por MFA / sospechoso al no coincidir con el patrón). La reputación de la IP y su ajuste al usuario definen el caso, no el nombre de la alerta.
+    * 👉 [Ver reporte](./Incident-Reports/41-IP-Anonima-El-Contexto-Decide.md)
+
+* **[INC-20261101-042] - Despliegue de Recursos Sospechoso en la Nube (Anomalía)**
+    * *Resumen:* Defender for Cloud marcó un deployment de Azure "raro" por un caller nunca visto en 14 días. Identificado como administrador/automatización legítimo de infraestructura cloud. Anomalía por baja frecuencia, no malicia.
+    * 👉 [Ver reporte](./Incident-Reports/42-Despliegue-Recursos-Sospechoso-Nube.md)
+
+* **[INC-20261101-043] - "Malware" Detectado en Servidor SQL — Ejecutable de ERP (Falso Positivo)**
+    * *Resumen:* Detección genérica/ML de malware (severidad alta) sobre un componente legítimo de un ERP de nicho en un servidor SQL. La alta severidad venía de la ubicación, no del archivo. Recomendación: exclusión por hash/ruta.
+    * 👉 [Ver reporte](./Incident-Reports/43-Malware-Servidor-SQL-Ejecutable-ERP.md)
+
+* **[INC-20261101-044] - DLP: Política de Información Médica sobre Documentos Financieros (Falso Positivo)**
+    * *Resumen:* Política DLP "información médica protegida" disparada sobre estados contables (PDF). Mismatch política/contenido = falso positivo del clasificador por defecto. Verificar que los archivos no se compartieran externamente.
+    * 👉 [Ver reporte](./Incident-Reports/44-DLP-Politica-Medica-Documentos-Financieros.md)
+
+* **[INC-20261101-045] - Fallos de Autenticación Recurrentes en AD — Credencial Vieja (Sistémico)**
+    * *Resumen:* Fallos NTLM "bad password" (0xC000006A) desde un host interno + éxitos Kerberos de la actividad legítima. Credencial vieja cacheada reintentando y bloqueando cuentas. Afecta a múltiples cuentas = problema sistémico a escalar.
+    * 👉 [Ver reporte](./Incident-Reports/45-Fallos-AD-Recurrentes-Credencial-Vieja-Sistemico.md)
+
+* **[INC-20261101-046] - Incidente Multi-Stage (Fusion) — Credential Access + Lateral Movement**
+    * *Resumen:* Fusion correlacionó fallos+éxito (acceso a credenciales) con RDP raro a un DC (movimiento lateral). Ambos legs trazan a la actividad normal de un administrador. Benigno — validar cada leg sin descartar a la ligera.
+    * 👉 [Ver reporte](./Incident-Reports/46-Incidente-Multi-Stage-Fusion.md)
+
+* **[INC-20261101-047] - Password Guessing Sospechado — Cuenta de Servicio de Escaneo**
+    * *Resumen:* Fallos 4625 desde múltiples IPs internas por una cuenta de servicio de escaneo. SubStatus 0xC000006A (contraseña incorrecta) por credencial desactualizada en la herramienta. Fix de causa raíz: actualizar la credencial del scanner.
+    * 👉 [Ver reporte](./Incident-Reports/47-Password-Guessing-Cuenta-Scanner.md)
+
+* **[INC-20261101-048] - Nueva Aplicación OAuth Consentida en el Tenant (Gobernanza)**
+    * *Resumen:* Consentimiento de una app OAuth de terceros (asistente de reuniones IA). Decisión de gobernanza, no triaje benigno-vs-malicioso. Verificar que sea genuina (no impostor para consent phishing), revisar scopes y restringir el consentimiento de usuario.
+    * 👉 [Ver reporte](./Incident-Reports/48-Nueva-App-OAuth-Consentida-Gobernanza.md)
+
+* **[INC-20261101-049] - Persistencia: Claves Run Creadas por Actualización de Windows (+ Hallazgo PUP)**
+    * *Resumen:* Creación de claves Run/RunOnce (T1547.001) por una actualización in-place de Windows orquestada por un agente RMM. La alerta de persistencia = benigna; al leer los valores se encontró incidentalmente un navegador PUP en autoarranque.
+    * 👉 [Ver reporte](./Incident-Reports/49-Persistencia-Run-Keys-Actualizacion-Windows.md)
+
+* **[INC-20261101-050] - Malware Prevenido — Troyano Disfrazado de Documento (TRUE POSITIVE) 🔴**
+    * *Resumen:* Defender detectó y previno un troyano (confirmado malicioso en VirusTotal) con nombre de documento pero extensión .exe, en Descargas de un usuario. Vector consistente con phishing. Contenido — scope del origen vía Defender XDR.
+    * 👉 [Ver reporte](./Incident-Reports/50-Malware-Prevenido-Troyano-Disfrazado-Documento.md)
+
+* **[INC-20261101-051] - Métodos de Autenticación Cambiados — Registro de MFA por el Usuario**
+    * *Resumen:* Registro de un nuevo método de MFA (técnica de persistencia). Confirmado que el propio usuario lo registró desde su contexto habitual, sin compromiso previo. Benigno — acción positiva de seguridad.
+    * 👉 [Ver reporte](./Incident-Reports/51-Metodos-Autenticacion-Cambiados-MFA-Usuario.md)
+
+* **[INC-20261101-052] - "Inicio Exitoso desde País No Confiable" — Intento Fallido en Cuenta Deshabilitada**
+    * *Resumen:* El título decía "successful" pero el log mostraba ResultType 50012 (fallido). La cuenta externa tenía 0 exitosos / 29 fallidos en 90 días → probablemente deshabilitada. Sin compromiso. Lección: verificar el código de resultado, no el título.
+    * 👉 [Ver reporte](./Incident-Reports/52-Pais-No-Confiable-Intento-Fallido-Cuenta-Deshabilitada.md)
+
+* **[INC-20261101-053] - Usuario Agregado a Rol de Administrador**
+    * *Resumen:* Alerta recurrente de escalación de privilegios. Verificado quién/qué/cuándo contra el patrón conocido: administrador legítimo asignando un rol en horario laboral. Lección: el historial de "siempre benigno" es mapa de lo normal, no permiso para dejar de mirar.
+    * 👉 [Ver reporte](./Incident-Reports/53-Usuario-Agregado-Rol-Administrador.md)
+
 ---
 
 ## 🛠️ Habilidades Técnicas (Tech Stack)
